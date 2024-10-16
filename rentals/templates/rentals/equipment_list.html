@@ -1,0 +1,38 @@
+<!-- rentals/templates/rentals/equipment_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Equipment</title>
+    {% load static %}  <!-- Load the static library -->
+    <link rel="stylesheet" href="{% static 'rentals/css/styles.css' %}">
+    <script src="{% static 'rentals/js/scripts.js' %}" defer></script>
+</head>
+<body>
+    <h1>Available Equipment</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price per Day</th>
+            <th>Action</th>
+        </tr>
+        {% for equipment in equipments %}
+        <tr>
+            <td>{{ equipment.name }}</td>
+            <td>{{ equipment.get_category_display }}</td>
+            <td>${{ equipment.price_per_day }}</td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="equipment_id" value="{{ equipment.id }}">
+                    <input type="number" name="days" placeholder="Number of days" required>
+                    <button type="submit">Book</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
